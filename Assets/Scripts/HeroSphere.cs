@@ -11,6 +11,7 @@ public class HeroSphere : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     [SerializeField] private Rigidbody _rb = null;
     [SerializeField] private ShootSphere _shootSpherePrefab = null;
+    [SerializeField] private string _obstacleTag = "Obstacle";
     [Space]
     [SerializeField] private float _moveSpeed = 2f;
     [SerializeField] private float _maxSplitTime = 5f;
@@ -34,6 +35,15 @@ public class HeroSphere : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if (_isTouched)
         {
             _touchTime += Time.deltaTime;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag(_obstacleTag))
+        {
+            _rb.velocity = Vector3.zero;
+            SceneManager.LoadScene(Constants.GameOverScene);
         }
     }
 
